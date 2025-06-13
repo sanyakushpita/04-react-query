@@ -33,15 +33,23 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
           Powered by TMDB
         </a>
         <form className={styles.form} onSubmit={handleSubmit}>
+          <label htmlFor='search' className={styles.visuallyHidden}>
+            Search movies
+          </label>
           <input
             className={styles.input}
+            id='search'
             type='text'
             name='query'
             autoComplete='off'
             placeholder='Search movies...'
             autoFocus
           />
-          <button className={styles.button} type='submit'>
+          <button
+            className={styles.button}
+            type='submit'
+            aria-label='Search movies'
+          >
             Search
           </button>
         </form>
