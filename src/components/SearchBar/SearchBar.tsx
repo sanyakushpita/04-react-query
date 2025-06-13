@@ -1,5 +1,5 @@
 import styles from './SearchBar.module.css';
-import type { FormEvent } from 'react';
+import { useRef } from 'react';
 import toast from 'react-hot-toast';
 
 interface SearchBarProps {
@@ -7,9 +7,9 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ onSubmit }: SearchBarProps) {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSearch = (formData: FormData) => {
     const query = formData.get('query')?.toString().trim();
 
     if (!query) {
@@ -18,7 +18,7 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
     }
 
     onSubmit(query);
-    e.currentTarget.reset();
+    formRef.current?.reset();
   };
 
   return (
@@ -32,7 +32,8 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
         >
           Powered by TMDB
         </a>
-        <form className={styles.form} onSubmit={handleSubmit}>
+
+        <form className={styles.form} action={handleSearch} ref={formRef}>
           <label htmlFor='search' className={styles.visuallyHidden}>
             Search movies
           </label>
